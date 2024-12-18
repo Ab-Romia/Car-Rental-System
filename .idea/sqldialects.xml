@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/sql/DDL" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/DML/populate_cars.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/DML/populate_customers.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/DML/populate_payments.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/DML/populate_reservations.sql" dialect="MySQL" />
+  </component>
+</project>
