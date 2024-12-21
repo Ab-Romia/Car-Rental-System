@@ -5,7 +5,7 @@ const Car = {
     // Add a car
     addCar: async (carData) => {
         const sql = `
-        INSERT INTO Cars (model, year, plate_id, status, office_location)
+        INSERT INTO Car (Model, Year, PlateID, Status, OfficeID)
         VALUES (?, ?, ?, ?, ?)
       `;
         const params = [carData.model, carData.year, carData.plateId, carData.status, carData.officeLocation];
@@ -14,7 +14,7 @@ const Car = {
 
     // Get available cars
     getAvailableCars: async () => {
-        const sql = `SELECT * FROM Cars WHERE status = 'active'`;
+        const sql = `SELECT * FROM Car WHERE status = 'active'`;
         return await executeQuery(sql);
     }
 };

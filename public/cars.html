@@ -1,0 +1,59 @@
+<!-- public/cars.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cars</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>Cars</h1>
+<p>List of cars available for rent.</p>
+<nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/customers">Customers</a></li>
+        <li><a href="/payments">Payments</a></li>
+        <li><a href="/reservations">Reservations</a></li>
+        <li><a href="/offices">Offices</a></li>
+    </ul>
+</nav>
+
+<h2>Get All Cars</h2>
+<button onclick="getAllCars()">Get All Cars</button>
+<div id="all-cars"></div>
+
+<h2>Get Car by ID</h2>
+<form id="get-car-form">
+    <label for="car-id">Car ID:</label>
+    <input type="text" id="car-id" name="car-id">
+    <button type="button" onclick="getCarById()">Get Car</button>
+</form>
+<div id="car-details"></div>
+
+<h2>Add New Car</h2>
+<form id="add-car-form">
+    <label for="model">Model:</label>
+    <input type="text" id="model" name="model">
+    <label for="year">Year:</label>
+    <input type="text" id="year" name="year">
+    <label for="plate-id">Plate ID:</label>
+    <input type="text" id="plate-id" name="plate-id">
+    <label for="status">Status:</label>
+    <input type="text" id="status" name="status">
+    <label for="office-location">Office Location:</label>
+    <input type="text" id="office-location" name="office-location">
+    <button type="button" onclick="addCar()">Add Car</button>
+</form>
+
+<h2>Delete Car</h2>
+<form id="delete-car-form">
+    <label for="delete-car-id">Car ID:</label>
+    <input type="text" id="delete-car-id" name="delete-car-id">
+    <button type="button" onclick="deleteCar()">Delete Car</button>
+</form>
+
+<script src="scripts.js"></script>
+</body>
+</html>
