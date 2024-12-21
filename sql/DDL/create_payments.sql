@@ -1,9 +1,10 @@
 USE car_rental_system;
 
-CREATE TABLE Payments (
-                          id INT PRIMARY KEY AUTO_INCREMENT,
-                          reservation_id INT,
-                          amount DECIMAL(10, 2) NOT NULL,
-                          payment_date DATE,
-                          FOREIGN KEY (reservation_id) REFERENCES Reservations(id)
+CREATE TABLE Payment (
+                         PaymentID INT AUTO_INCREMENT PRIMARY KEY,
+                         ReservationID INT NOT NULL,
+                         PaymentDate DATE NOT NULL,
+                         Amount DECIMAL(10, 2) NOT NULL,
+                         PaymentMethod ENUM('Credit Card', 'Cash', 'Other') NOT NULL,
+                         FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE CASCADE
 );
