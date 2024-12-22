@@ -5,7 +5,6 @@ const Customer = require("./models");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 
-// Customer registration route
 router.post("/register", async (req, res) => {
     const { firstName, lastName, email, phone, address, password, confirmpassword } = req.body;
     if (!firstName || !lastName || !email || !password || !confirmpassword) {
@@ -32,10 +31,7 @@ router.post("/register", async (req, res) => {
     }
 });
 
-// Customer login route
-// Customer login route
-// Customer login route
-// controllers.js
+
 router.post("/login", (req, res, next) => {
     passport.authenticate("local", (err, customer, info) => {
         if (err) {
@@ -48,7 +44,7 @@ router.post("/login", (req, res, next) => {
             if (err) {
                 return next(err);
             }
-            req.session.name = customer.FirstName; // Ensure this matches the case in your database
+            req.session.name = customer.FirstName;
             return res.redirect("/");
         });
     })(req, res, next);
