@@ -7,5 +7,6 @@ CREATE TABLE Customer (
                           Email VARCHAR(100) UNIQUE NOT NULL,
                           Phone VARCHAR(15),
                           Address TEXT,
-                          AccountCreatedDate DATE NOT NULL
+                          AccountCreatedDate DATE NOT NULL,
+                          Password VARCHAR(255) NOT NULL
 );

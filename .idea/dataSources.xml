@@ -7,6 +7,12 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
+      <driver-properties>
+        <property name="allowLoadLocalInfile" value="TRUE" />
+        <property name="allowLoadLocalInfileInPath" value="TRUE" />
+        <property name="allowMultiQueries" value="TRUE" />
+        <property name="allowPublicKeyRetrieval" value="TRUE" />
+      </driver-properties>
     </data-source>
     <data-source source="LOCAL" name="car-rental-db@localhost" uuid="983016f8-a0c8-4aef-9ac4-2cc69f2e3df0">
       <driver-ref>mariadb</driver-ref>

@@ -1,0 +1,67 @@
+<!-- register.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+</head>
+
+<body>
+<div class="overflow-hidden h-screen bg-slate-200">
+    <div class="overflow-hidden h-screen">
+        <header class="absolute inset-x-0 top-0 z-50">
+            <nav class="flex items-center p-6 lg:px-8" aria-label="Global">
+                <div class="flex lg:flex-1 text-blue-800 text-xl">
+                    <a class="border-collapse" href="/">Home</a>
+                </div>
+            </nav>
+        </header>
+        <div class="container mt-8 p-8">
+            <h1 class="text-2xl font-bold mb-6">Registration Form</h1>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="post" action="/api/register">
+                <% if(error) { %>
+                    <p class="text-red-500"><%= error %></p>
+                <% } %>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="firstName">First Name</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="firstName" name="firstName" placeholder="John" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="lastName">Last Name</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="lastName" name="lastName" placeholder="Doe" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="email" id="email" name="email" placeholder="john@example.com" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">Phone</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="phone" name="phone" placeholder="123-456-7890" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="address">Address</label>
+                    <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" id="address" name="address" placeholder="123 Main St"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="password" id="password" name="password" placeholder="********" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmpassword">Confirm Password</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="password" id="confirmpassword" name="confirmpassword" placeholder="********" />
+                </div>
+                <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Register</button>
+                <p class="pt-5">
+                    Already have an account?
+                    <a href="/login" class="text-cyan-600 cursor-pointer">Login here</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
