@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/models/car.models.js" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/routes/cars.js" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/routes/customers.js" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/routes/offices.js" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/routes/payments.js" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/routes/reservations.js" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/controllers.js" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/models.js" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/sql/DDL" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/DDL/create_cars.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/DDL/create_customers.sql" dialect="MySQL" />
@@ -14,10 +10,12 @@
     <file url="file://$PROJECT_DIR$/sql/DDL/create_office.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/DDL/create_payments.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/DDL/create_reservations.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/DDL/create_users.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/DML/populate_cars.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/DML/populate_customers.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/DML/populate_offices.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/DML/populate_payments.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/DML/populate_reservations.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/DML/populate_users.sql" dialect="MySQL" />
   </component>
 </project>

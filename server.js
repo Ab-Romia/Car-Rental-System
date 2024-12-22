@@ -1,59 +1,52 @@
-const express = require('express');
-const path = require('path');
+// Server.js
+
+// Imports //
+const express = require("express");
+const passport = require("passport");
+const Customer = require("./models.js");
+const localStrategy = require("./pass.js");
+const controllers = require("./controllers.js");
+const cookieParser = require("cookie-parser");
+const connectDB = require("./db");
+const ejs = require("ejs");
+const bodyParser = require("body-parser");
+const routes = require("./pages.js");
+const session = require("express-session");
+
+// Main Server //
 const app = express();
-const PORT = 3000;
+connectDB();
+app.use(
+    session({
+        secret: "GFGLogin346",
+        resave: false,
+        saveUninitialized: false,
+    })
+);
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.set("view engine", "ejs");
 
-app.use(express.json());
-
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// Serialize and deserialize customer objects to maintain user sessions
+passport.serializeUser((customer, done) => done(null, customer.CustomerID));
+passport.deserializeUser(async (id, done) => {
+    try {
+        const customer = await Customer.findCustomerById(id);
+        done(null, customer);
+    } catch (err) {
+        done(err, null);
+    }
 });
-
-// Serve HTML files for each route
-app.get('/cars', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'cars.html'));
-});
-
-app.get('/customers', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'customers.html'));
-});
-
-app.get('/payments', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'payments.html'));
-});
-
-app.get('/reservations', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'reservations.html'));
-});
-
-app.get('/offices', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'offices.html'));
-});
-
-// Import route files
-const carRoutes = require('./routes/cars');
-const customerRoutes = require('./routes/customers');
-const paymentRoutes = require('./routes/payments');
-const reservationRoutes = require('./routes/reservations');
-const officesRoutes = require('./routes/offices');
 
 // Use the routes
-app.use('/api/cars', carRoutes);
-app.use('/api/customers', customerRoutes);
-app.use('/api/payments', paymentRoutes);
-app.use('/api/reservations', reservationRoutes);
-app.use('/api/offices', officesRoutes);
-
-// Route to terminate the server
-app.get('/shutdown', (req, res) => {
-    res.send('Shutting down the server...');
-    process.exit();
-});
+app.use("/api/", controllers); // Path to your authentication routes file
+app.use("/", routes);
 
 // Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+const port = 3000; // Replace with your desired port number
+app.listen(port, () => {
+    console.log(`Server started on port ${port}`);
 });
