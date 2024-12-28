@@ -2,7 +2,7 @@
 
 const express = require("express");
 const passport = require("passport");
-const Customer = require("./models.js");
+const Customer = require("./models/Customer");
 const localStrategy = require("./pass.js");
 const controllers = require("./controllers.js");
 const cookieParser = require("cookie-parser");
@@ -13,6 +13,7 @@ const routes = require("./pages.js");
 const session = require("express-session");
 const carRoutes = require("./routes/carRoutes");
 const reservationRoutes = require("./routes/reservationRoutes");
+const authController = require("./controllers/authController"); 
 const app = express();
 connectDB();
 app.use(
@@ -38,10 +39,9 @@ passport.deserializeUser(async (id, done) => {
         done(err, null);
     }
 });
-
-app.use("/api/", controllers);
-app.use("/api", carRoutes);
-app.use("/api", reservationRoutes);
+app.use("/api/auth", authController);
+app.use("/api", carRoutes); 
+app.use("/api", reservationRoutes); 
 app.use("/", routes);
 
 const port = 3000;

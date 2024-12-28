@@ -1,7 +1,6 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Reservation = require('../models'); 
-
+const Reservation = require("../models/Reservation");
 // Create a new reservation
 router.post('/add', async (req, res) => {
     const { carID, customerID, reservationDate, pickupDate, returnDate, totalPayment } = req.body;

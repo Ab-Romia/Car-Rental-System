@@ -1,7 +1,7 @@
 // routes/carRoutes.js
 const express = require("express");
 const router = express.Router();
-const Car = require("../models.js"); 
+const Car = require("../models/Car"); 
 
 router.post("/add", async (req, res) => {
     const { model, year, plateID, status, officeID } = req.body;
