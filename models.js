@@ -142,6 +142,26 @@ async function searchReservations(searchConditions) {
     const [rows] = await pool.execute(query, values);
     return rows;
 }
+// Create a payment
+async function createPayment(reservationID, paymentDate, amount, paymentMethod) {
+    const query = 'INSERT INTO Payment (ReservationID, PaymentDate, Amount, PaymentMethod) VALUES (?, ?, ?, ?)';
+    const [result] = await pool.execute(query, [reservationID, paymentDate, amount, paymentMethod]);
+    return result.insertId;
+}
+
+// Get all payments
+async function getAllPayments() {
+    const query = 'SELECT * FROM Payment';
+    const [rows] = await pool.execute(query);
+    return rows;
+}
+
+// Get payment by ID
+async function getPaymentById(id) {
+    const query = 'SELECT * FROM Payment WHERE PaymentID = ?';
+    const [rows] = await pool.execute(query, [id]);
+    return rows[0];
+}
 
 module.exports = {
     findCustomerByEmail,
@@ -158,5 +178,8 @@ module.exports = {
     updateReservation,
     deleteReservation,
     searchReservations,
+    createPayment,
+    getAllPayments,
+    getPaymentById,
     pool
 };

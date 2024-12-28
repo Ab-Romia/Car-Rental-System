@@ -80,4 +80,26 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
+// Update Car Status
+router.put("/:id/status", async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+        return res.status(400).json({ error: "Status is required" });
+    }
+
+    try {
+        const updatedCar = await Car.updateCarStatus(id, status);
+
+        if (!updatedCar) {
+            return res.status(404).json({ error: "Car not found or update failed" });
+        }
+
+        return res.status(200).json(updatedCar);
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
+    }
+});
+
 module.exports = router;
