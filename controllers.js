@@ -6,7 +6,7 @@ const Car = require("./models");
 const Reservation = require('./models');  
 const passport = require("passport");
 const bcrypt = require('bcryptjs');
-
+  
 
 router.post("/register", async (req, res) => {
     const { firstName, lastName, email, phone, address, password, confirmpassword } = req.body;
