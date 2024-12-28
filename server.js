@@ -11,7 +11,7 @@ const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const routes = require("./pages.js");
 const session = require("express-session");
-
+const carRoutes = require("./routes/carRoutes");
 const app = express();
 connectDB();
 app.use(
@@ -39,6 +39,7 @@ passport.deserializeUser(async (id, done) => {
 });
 
 app.use("/api/", controllers);
+app.use("/api", carRoutes);
 app.use("/", routes);
 
 const port = 3000;
