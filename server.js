@@ -9,7 +9,7 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("./db");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
-const routes = require("./pages.js");
+const routes = require("./routes/pages.js");
 const session = require("express-session");
 const carRoutes = require("./routes/carRoutes");
 const reservationRoutes = require("./routes/reservationRoutes");
@@ -39,9 +39,9 @@ passport.deserializeUser(async (id, done) => {
         done(err, null);
     }
 });
-app.use("/api/auth", authController);
-app.use("/api", carRoutes); 
-app.use("/api", reservationRoutes); 
+app.use("/api/auth", authController);  
+app.use("/api/cars", carRoutes);       
+app.use("/api/reservations", reservationRoutes); 
 app.use("/", routes);
 
 const port = 3000;
