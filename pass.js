@@ -1,12 +1,13 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const Customer = require("./models");
-const bcrypt = require("bcrypt");
+const Customer = require("./models/Customer");
+const bcrypt = require('bcryptjs');
+
 
 passport.use(
     new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
         try {
-            const customer = await Customer.findCustomerByEmail(email);
+            const customer = await Customer.getByEmail(email);
             if (!customer) {
                 return done(null, false, { message: "Incorrect email" });
             }
