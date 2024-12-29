@@ -15,11 +15,14 @@ const Report = {
         return rows;
     },
 
+
     getReservationsByCar: async (carId, startDate, endDate) => {
         const query = `
-            SELECT r.reservationId, c.firstName, c.lastName, r.reservationDate, r.returnDate
+            SELECT r.reservationId, c.firstName, c.lastName, r.reservationDate, r.returnDate,
+                   ca.carId, ca.model, ca.plateId, ca.year, ca.status, ca.officeId
             FROM Reservation r
-            JOIN Customer c ON r.customerId = c.customerId
+                     JOIN Customer c ON r.customerId = c.customerId
+                     JOIN Car ca ON r.carId = ca.carId
             WHERE r.carId = ? AND r.reservationDate BETWEEN ? AND ?
             ORDER BY r.reservationDate;
         `;
