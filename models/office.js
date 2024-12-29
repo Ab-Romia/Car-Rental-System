@@ -1,4 +1,4 @@
-const pool = require("../config/dbConfig");
+const pool = require("../config/pool");
 
 const Office = {
     create: async (officeName, location) => {

@@ -3,6 +3,8 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/models/Car.js" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/models/Customer.js" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/models/Reservation.js" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/models/report.js" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/sql/DDL" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/DDL/create_cars.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/DDL/create_customers.sql" dialect="MySQL" />

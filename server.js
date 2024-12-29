@@ -7,6 +7,7 @@ const localStrategy = require("./pass.js");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./config/dbConfig");
 const ejs = require("ejs");
+const reportRoutes = require("./routes/reportRoutes");
 const bodyParser = require("body-parser");
 const routes = require("./routes/pages.js");
 const session = require("express-session");
@@ -33,13 +34,16 @@ app.set("view engine", "ejs");
 passport.serializeUser((customer, done) => done(null, customer.CustomerID));
 passport.deserializeUser(async (id, done) => {
     try {
-        const customer = await Customer.getByEmail(id);
+        const customer = await Customer.getById(id);
         done(null, customer);
     } catch (err) {
         done(err, null);
     }
 });
 app.use("/api/", authController);
+app.use("/report/",reportRoutes);
+app.use("/res/",reservationRoutes);
+app.use("/car/",carRoutes);
 
 app.use("/", routes);
 
