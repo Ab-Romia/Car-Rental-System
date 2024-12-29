@@ -1,4 +1,3 @@
-const mysql = require('mysql2/promise');
 const pool = require('../config/pool');
 
 const Payment = {
@@ -16,9 +15,15 @@ const Payment = {
         const query = 'SELECT * FROM Payment WHERE PaymentID = ?';
         const [rows] = await pool.execute(query, [id]);
         return rows[0];
+    },
+    update: async (id, reservationID, paymentDate, amount, paymentMethod) => {
+        const query = 'UPDATE Payment SET ReservationID = ?, PaymentDate = ?, Amount = ?, PaymentMethod = ? WHERE PaymentID = ?';
+        await pool.execute(query, [reservationID, paymentDate, amount, paymentMethod, id]);
+    },
+    delete: async (id) => {
+        const query = 'DELETE FROM Payment WHERE PaymentID = ?';
+        await pool.execute(query, [id]);
     }
 };
 
 module.exports = Payment;
-
-

@@ -15,6 +15,8 @@ const carRoutes = require("./routes/carRoutes");
 const reservationRoutes = require("./routes/reservationRoutes");
 const authController = require("./controllers/authController"); 
 const searchRoutes = require("./routes/searchRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
+
 
 const app = express();
 connectDB();
@@ -41,7 +43,7 @@ passport.deserializeUser(async (id, done) => {
         done(err, null);
     }
 });
-
+app.use("/payment/", paymentRoutes);
 app.use("/search/", searchRoutes);
 app.use("/api/", authController);
 app.use("/report/",reportRoutes);

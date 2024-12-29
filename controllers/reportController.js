@@ -34,7 +34,6 @@ const reportController = {
         }
     },
 
-
     getCustomerReservations: async (req, res) => {
         const { customerId } = req.query;
 
