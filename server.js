@@ -40,9 +40,9 @@ passport.deserializeUser(async (id, done) => {
         done(err, null);
     }
 });
-app.use("/api/login", authController);
-app.use("/api/register", authController);
-app.use("/api/auth", authController);  
+app.use("/api/", authController);
+app.use("/api/", authController);
+// app.use("/api/auth", authController);
 app.use("/api/cars", carRoutes);       
 app.use("/api/reservations", reservationRoutes); 
 app.use("/", routes);
