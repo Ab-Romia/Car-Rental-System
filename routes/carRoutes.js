@@ -1,105 +1,23 @@
-// routes/carRoutes.js
 const express = require("express");
 const router = express.Router();
-const Car = require("../models/Car"); 
+const carController = require("../controllers/carController");
 
-router.post("/add", async (req, res) => {
-    const { model, year, plateID, status, officeID } = req.body;
+// Add a new car
+router.post("/add", carController.addCar);
 
-    // Basic validation
-    if (!model || !year || !plateID || !status || !officeID) {
-        return res.status(400).json({ error: "All fields are required" });
-    }
+// Get all cars
+router.get("/all", carController.getAllCars);
 
-    try {
-       
-        const newCar = await Car.createCar(model, year, plateID, status, officeID);
+// Get a car by ID
+router.get("/:id", carController.getCarById);
 
-     
-        return res.status(201).json(newCar);
-    } catch (err) {
-        return res.status(500).json({ message: err.message });
-    }
-});
+// Update a car
+router.put("/:id", carController.updateCar);
 
-router.get("/all", async (req, res) => {
-    try {
-        const cars = await Car.getAllCars();
-        return res.status(200).json(cars);
-    } catch (err) {
-        return res.status(500).json({ message: err.message });
-    }
-});
+// Update car status
+router.put("/:id/status", carController.updateCarStatus);
 
-router.get("/:id", async (req, res) => {
-    const { id } = req.params;
-
-    try {
-        const car = await Car.getCarById(id);
-
-        if (!car) {
-            return res.status(404).json({ error: "Car not found" });
-        }
-
-        return res.status(200).json(car);
-    } catch (err) {
-        return res.status(500).json({ message: err.message });
-    }
-});
-
-router.put("/:id", async (req, res) => {
-    const { id } = req.params;
-    const { model, year, plateID, status, officeID } = req.body;
-
-    try {
-        const updatedCar = await Car.updateCar(id, model, year, plateID, status, officeID);
-
-        if (!updatedCar) {
-            return res.status(404).json({ error: "Car not found or update failed" });
-        }
-
-        return res.status(200).json(updatedCar);
-    } catch (err) {
-        return res.status(500).json({ message: err.message });
-    }
-});
-
-router.delete("/:id", async (req, res) => {
-    const { id } = req.params;
-
-    try {
-        const deletedCar = await Car.deleteCar(id);
-
-        if (!deletedCar) {
-            return res.status(404).json({ error: "Car not found" });
-        }
-
-        return res.status(200).json({ message: "Car deleted successfully" });
-    } catch (err) {
-        return res.status(500).json({ message: err.message });
-    }
-});
-
-// Update Car Status
-router.put("/:id/status", async (req, res) => {
-    const { id } = req.params;
-    const { status } = req.body;
-
-    if (!status) {
-        return res.status(400).json({ error: "Status is required" });
-    }
-
-    try {
-        const updatedCar = await Car.updateCarStatus(id, status);
-
-        if (!updatedCar) {
-            return res.status(404).json({ error: "Car not found or update failed" });
-        }
-
-        return res.status(200).json(updatedCar);
-    } catch (err) {
-        return res.status(500).json({ message: err.message });
-    }
-});
+// Delete a car
+router.delete("/:id", carController.deleteCar);
 
 module.exports = router;
