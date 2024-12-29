@@ -12,5 +12,16 @@ const pool = mysql.createPool({
   queueLimit: 0                // No queue limit, adjust as needed
 });
 
+function connectDB() {
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error connecting to the database:', err);
+      return;
+    }
+    console.log('Connected to the car_rental_system database');
+    connection.release();
+  });
+}
+
 // Exporting the pool to be used in other modules
-module.exports = pool;
+module.exports = connectDB;
