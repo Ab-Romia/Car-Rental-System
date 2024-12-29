@@ -14,6 +14,7 @@ const session = require("express-session");
 const carRoutes = require("./routes/carRoutes");
 const reservationRoutes = require("./routes/reservationRoutes");
 const authController = require("./controllers/authController"); 
+const searchRoutes = require("./routes/searchRoutes");
 
 const app = express();
 connectDB();
@@ -40,11 +41,12 @@ passport.deserializeUser(async (id, done) => {
         done(err, null);
     }
 });
+
+app.use("/search/", searchRoutes);
 app.use("/api/", authController);
 app.use("/report/",reportRoutes);
 app.use("/res/",reservationRoutes);
 app.use("/car/",carRoutes);
-
 app.use("/", routes);
 
 const port = 3000;

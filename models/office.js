@@ -3,7 +3,7 @@ const pool = require("../config/pool");
 const Office = {
     create: async (officeName, location) => {
         const query = `
-            INSERT INTO Office (OfficeName, Location)
+            INSERT INTO Office (Name, Location)
             VALUES (?, ?)`;
         const [result] = await pool.execute(query, [officeName, location]);
         return result.insertId;
