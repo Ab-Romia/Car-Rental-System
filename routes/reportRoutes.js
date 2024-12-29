@@ -8,6 +8,7 @@ router.get('/res', reportController.getReservationsWithinPeriod);
 // Route for getting reservations by car within a specified period
 router.get('/res/by-car', reportController.getReservationsByCar);
 
+router.get('/res/car-status-day',reportController.getCarStatusOnSpecificDay)
 // Route for getting all reservations of a specific customer
 router.get('/res/by-customer', reportController.getCustomerReservations);
 

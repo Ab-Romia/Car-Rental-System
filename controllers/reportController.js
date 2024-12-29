@@ -23,6 +23,18 @@ const reportController = {
         }
     },
 
+    getCarStatusOnSpecificDay: async (req, res) => {
+        const { specificDate } = req.query;
+
+        try {
+            const report = await Report.getCarStatusOnSpecificDay(specificDate);
+            res.status(200).json(report);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+
     getCustomerReservations: async (req, res) => {
         const { customerId } = req.query;
 
