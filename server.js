@@ -14,6 +14,7 @@ const session = require("express-session");
 const carRoutes = require("./routes/carRoutes");
 const reservationRoutes = require("./routes/reservationRoutes");
 const authController = require("./controllers/authController"); 
+
 const app = express();
 connectDB();
 app.use(
@@ -39,9 +40,10 @@ passport.deserializeUser(async (id, done) => {
         done(err, null);
     }
 });
-app.use("/api/auth", authController);  
-app.use("/api/cars", carRoutes);       
-app.use("/api/reservations", reservationRoutes); 
+app.use("/api/auth", authController); // Authentication routes (login, register, logout)
+app.use("/api/cars", carController); // Car-related routes
+app.use("/api/reservations", reservationController); // Reservation-related routes
+
 app.use("/", routes);
 
 const port = 3000;

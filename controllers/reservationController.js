@@ -1,76 +1,72 @@
-// controllers/reservationController.js
 const Reservation = require("../models/Reservation");
 
-// Create new reservation
+// Create a new reservation
 async function createReservation(req, res) {
     const { carID, customerID, reservationDate, pickupDate, returnDate, totalPayment } = req.body;
 
     if (!carID || !customerID || !reservationDate || !pickupDate || !returnDate || !totalPayment) {
-        return res.status(403).json({ error: "All fields are required" });
+        return res.status(400).json({ error: "All fields are required" });
     }
 
     try {
-        const newReservationId = await Reservation.createReservation(carID, customerID, reservationDate, pickupDate, returnDate, totalPayment);
-        res.status(201).json({ message: "Reservation created successfully", reservationId: newReservationId });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+        const reservationId = await Reservation.create(carID, customerID, reservationDate, pickupDate, returnDate, totalPayment);
+        res.status(201).json({ message: "Reservation created successfully", reservationId });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 }
 
 // Get all reservations
 async function getAllReservations(req, res) {
     try {
-        const reservations = await Reservation.getAllReservations();
+        const reservations = await Reservation.getAll();
         res.status(200).json(reservations);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 }
 
-// Get reservation by ID
+// Get a specific reservation by ID
 async function getReservationById(req, res) {
     const { id } = req.params;
     try {
-        const reservation = await Reservation.getReservationById(id);
-        if (reservation) {
-            res.status(200).json(reservation);
-        } else {
-            res.status(404).json({ message: "Reservation not found" });
+        const reservation = await Reservation.getById(id);
+        if (!reservation) {
+            return res.status(404).json({ error: "Reservation not found" });
         }
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(200).json(reservation);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 }
 
-// Update reservation
+// Update a reservation
 async function updateReservation(req, res) {
     const { id } = req.params;
     const { carID, customerID, reservationDate, pickupDate, returnDate, totalPayment } = req.body;
 
     try {
-        const updatedReservation = await Reservation.updateReservation(id, carID, customerID, reservationDate, pickupDate, returnDate, totalPayment);
-        if (updatedReservation) {
-            res.status(200).json({ message: "Reservation updated successfully", reservation: updatedReservation });
-        } else {
-            res.status(404).json({ message: "Reservation not found or no changes made" });
+        const updatedReservation = await Reservation.update(id, carID, customerID, reservationDate, pickupDate, returnDate, totalPayment);
+        if (!updatedReservation) {
+            return res.status(404).json({ error: "Reservation not found or no changes made" });
         }
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(200).json({ message: "Reservation updated successfully", reservation: updatedReservation });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 }
 
-// Delete reservation
+// Delete a reservation
 async function deleteReservation(req, res) {
     const { id } = req.params;
     try {
-        const result = await Reservation.deleteReservation(id);
-        if (result) {
-            res.status(200).json({ message: "Reservation deleted successfully" });
-        } else {
-            res.status(404).json({ message: "Reservation not found" });
+        const isDeleted = await Reservation.delete(id);
+        if (!isDeleted) {
+            return res.status(404).json({ error: "Reservation not found" });
         }
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(200).json({ message: "Reservation deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 }
 
