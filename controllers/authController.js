@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const accountCreatedDate = new Date().toISOString().split('T')[0];
-        await Customer.createCustomer(firstName, lastName, email, phone, address, accountCreatedDate, hashedPassword);
+        await Customer.create(firstName, lastName, email, phone, address, accountCreatedDate, hashedPassword);
 
         return res.redirect("/login");
     } catch (err) {
