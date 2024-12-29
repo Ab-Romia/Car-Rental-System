@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-const pool = require('../config/dbConfig');
+const pool = require('../config/pool');
 const Car = {
     create: async (model, year, plateID, status, officeID) => {
         const query = "INSERT INTO Car (Model, Year, PlateID, Status, OfficeID) VALUES (?, ?, ?, ?, ?)";

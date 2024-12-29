@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-const pool = require('../config/dbConfig');
+const pool = require('../config/pool');
 
 const Customer = {
     create: async (firstName, lastName, email, phone, address, accountCreatedDate, hashedPassword) => {

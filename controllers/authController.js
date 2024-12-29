@@ -16,7 +16,7 @@ router.post("/register", async (req, res) => {
         return res.status(403).render("register", { error: "Password do not match" });
     }
     try {
-        const existingCustomer = await Customer.findCustomerByEmail(email);
+        const existingCustomer = await Customer.getByEmail(email);
         if (existingCustomer) {
             return res.status(409).render("register", { error: "Email already exists" });
         }

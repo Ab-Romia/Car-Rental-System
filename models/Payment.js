@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-const pool = require('../config/dbConfig');
+const pool = require('../config/pool');
 
 const Payment = {
     create: async (reservationID, paymentDate, amount, paymentMethod) => {

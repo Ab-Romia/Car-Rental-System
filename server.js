@@ -4,9 +4,8 @@ const express = require("express");
 const passport = require("passport");
 const Customer = require("./models/Customer");
 const localStrategy = require("./pass.js");
-const controllers = require("./controllers.js");
 const cookieParser = require("cookie-parser");
-const connectDB = require("./db");
+const connectDB = require("./config/dbConfig");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const routes = require("./routes/pages.js");
@@ -34,15 +33,13 @@ app.set("view engine", "ejs");
 passport.serializeUser((customer, done) => done(null, customer.CustomerID));
 passport.deserializeUser(async (id, done) => {
     try {
-        const customer = await Customer.findCustomerById(id);
+        const customer = await Customer.getByEmail(id);
         done(null, customer);
     } catch (err) {
         done(err, null);
     }
 });
-app.use("/api/auth", authController); // Authentication routes (login, register, logout)
-app.use("/api/cars", carController); // Car-related routes
-app.use("/api/reservations", reservationController); // Reservation-related routes
+app.use("/api/", authController);
 
 app.use("/", routes);
 
