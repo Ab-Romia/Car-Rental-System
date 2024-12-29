@@ -31,6 +31,39 @@ const Report = {
         return rows;
     },
 
+
+
+    getCarStatusOnSpecificDay: async (specificDate) => {
+        const query = `
+            SELECT 
+                ca.CarID,
+                ca.Model AS carModel,
+                ca.Year AS carYear,
+                ca.PlateID AS carPlateId,
+                ca.Status AS carStatus,
+                o.OfficeName AS officeName
+            FROM 
+                Car ca
+            LEFT JOIN 
+                Office o ON ca.OfficeID = o.OfficeID
+            LEFT JOIN 
+                Reservation r ON r.CarID = ca.CarID
+                AND r.ReservationDate <= ? AND r.ReturnDate >= ?
+            WHERE 
+                ca.Status IN ('Active', 'Out of Service', 'Rented')
+            GROUP BY 
+                ca.CarID
+            ORDER BY 
+                ca.CarID;
+        `;
+        
+        const [rows] = await pool.execute(query, [specificDate, specificDate]);
+        return rows;
+    },
+
+
+
+    
     getCustomerReservations: async (customerId) => {
         const query = `
             SELECT r.reservationId, ca.model AS carModel, ca.plateId, r.reservationDate, r.returnDate
