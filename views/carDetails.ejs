@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Details</title>
+</head>
+<body>
+<div class="container mt-8 p-8">
+    <h1 class="text-2xl font-bold mb-6">Car Details</h1>
+    <table class="min-w-full bg-white">
+        <tr>
+            <th class="py-2">Model</th>
+            <td class="border px-4 py-2"><%= car.model %></td>
+        </tr>
+        <tr>
+            <th class="py-2">Year</th>
+            <td class="border px-4 py-2"><%= car.year %></td>
+        </tr>
+        <tr>
+            <th class="py-2">Plate ID</th>
+            <td class="border px-4 py-2"><%= car.plateID %></td>
+        </tr>
+        <tr>
+            <th class="py-2">Status</th>
+            <td class="border px-4 py-2"><%= car.status %></td>
+        </tr>
+        <tr>
+            <th class="py-2">Office ID</th>
+            <td class="border px-4 py-2"><%= car.officeID %></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
