@@ -13,7 +13,7 @@ const paymentController = {
     getAllPayments: async (req, res) => {
         try {
             const payments = await Payment.getAll();
-            res.json(payments);
+            res.render("allPayments", { payments });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

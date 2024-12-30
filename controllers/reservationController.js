@@ -5,14 +5,14 @@ async function createReservation(req, res) {
     const { carID, customerID, reservationDate, pickupDate, returnDate, totalPayment } = req.body;
 
     if (!carID || !customerID || !reservationDate || !pickupDate || !returnDate || !totalPayment) {
-        return res.status(400).json({ error: "All fields are required" });
+        return { statusCode: 400, body: { error: "All fields are required." } };
     }
 
     try {
         const reservationId = await Reservation.create(carID, customerID, reservationDate, pickupDate, returnDate, totalPayment);
-        res.status(201).json({ message: "Reservation created successfully", reservationId });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+        return { statusCode: 201, body: { message: "res added successfully.", carId: reservationId } };
+    } catch (err) {
+        return { statusCode: 500, body: { error: err.message } };
     }
 }
 
@@ -20,7 +20,7 @@ async function createReservation(req, res) {
 async function getAllReservations(req, res) {
     try {
         const reservations = await Reservation.getAll();
-        res.status(200).json(reservations);
+        res.render("allRes", { reservations });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -30,11 +30,11 @@ async function getAllReservations(req, res) {
 async function getReservationById(req, res) {
     const { id } = req.params;
     try {
-        const reservation = await Reservation.getById(id);
+        const reservations = await Reservation.getById(id);
         if (!reservation) {
             return res.status(404).json({ error: "Reservation not found" });
         }
-        res.status(200).json(reservation);
+        res.render("allRes", { reservations });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -47,12 +47,13 @@ async function updateReservation(req, res) {
 
     try {
         const updatedReservation = await Reservation.update(id, carID, customerID, reservationDate, pickupDate, returnDate, totalPayment);
-        if (!updatedReservation) {
-            return res.status(404).json({ error: "Reservation not found or no changes made" });
+        if (updatedReservation) {
+            return { statusCode: 200, body: { message: "reservation updated successfully." } };
+        } else {
+            return { statusCode: 404, body: { error: "reservation not found." } };
         }
-        res.status(200).json({ message: "Reservation updated successfully", reservation: updatedReservation });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    } catch (err) {
+        return { statusCode: 500, body: { error: err.message } };
     }
 }
 
@@ -61,12 +62,13 @@ async function deleteReservation(req, res) {
     const { id } = req.params;
     try {
         const isDeleted = await Reservation.delete(id);
-        if (!isDeleted) {
-            return res.status(404).json({ error: "Reservation not found" });
+        if (isDeleted) {
+            return { statusCode: 200, body: { message: "resr deleted successfully." } };
+        } else {
+            return { statusCode: 404, body: { error: "resr not found." } };
         }
-        res.status(200).json({ message: "Reservation deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    } catch (err) {
+        return { statusCode: 500, body: { error: err.message } };
     }
 }
 

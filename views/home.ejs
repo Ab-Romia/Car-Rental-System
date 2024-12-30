@@ -14,6 +14,18 @@
             <div class="flex lg:flex-1 text-blue-800 text-xl">
                 <a class="border-collapse text-blue-800 text-xl" href="/">Home</a>
             </div>
+            <% if (name) { %>
+                <div class="flex lg:flex-1 text-blue-800 text-xl">
+                    <a class="border-collapse text-blue-800 text-xl" href="/car/all">All Cars</a>
+                </div>
+                <div class="flex lg:flex-1 text-blue-800 text-xl">
+                    <a class="border-collapse text-blue-800 text-xl" href="/res/all">All Reservations</a>
+                </div>
+                <div class="flex lg:flex-1 text-blue-800 text-xl">
+                    <a class="border-collapse text-blue-800 text-xl" href="/payment/all">All Payments</a>
+                </div>
+
+            <% } %>
         </nav>
     </header>
     <% if (name) { %>
@@ -46,6 +58,322 @@
         </div>
     <% } %>
 </div>
+<% if (name) { %>
+    <div class="container mt-8 p-8">
+        <h1 class="text-2xl font-bold mb-6">Home</h1>
+        <!-- Advanced Search Form -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Advanced Search</h2>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="get" action="/search/adv">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="carInfo">Car Information</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="carInfo" name="carInfo" placeholder="Model, Year, Plate ID" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="customerInfo">Customer Information</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="customerInfo" name="customerInfo" placeholder="Name, Email, Phone" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="reservationDate">Reservation Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="reservationDate" name="reservationDate" />
+                </div>
+                <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Search Reservations within a Period Form -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Search Reservations within a Period</h2>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="get" action="/report/res">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="startDate">Start Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="startDate" name="startDate" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="endDate">End Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="endDate" name="endDate" required />
+                </div>
+                <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Search Reservations of a Car within a Period Form -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Search Reservations of a Car within a Period</h2>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="get" action="/report/res/by-car">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="carID">Car ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="carID" name="carID" placeholder="1" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="startDate">Start Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="startDate" name="startDate" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="endDate">End Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="endDate" name="endDate" required />
+                </div>
+                <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Search Car Status on a Specific Day Form -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Search Car Status on a Specific Day</h2>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="get" action="/report/res/car-status-day">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="date">Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="date" name="date" required />
+                </div>
+                <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Search Reservations of a Specific Customer Form -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Search Reservations of a Specific Customer</h2>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="get" action="/report/res/by-customer">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="customerId">Customer ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="customerID" name="customerID" placeholder="1" required />
+                </div>
+                <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Search Daily Payments within a Period Form -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Search Daily Payments within a Period</h2>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="get" action="/report/payments/daily">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="startDate">Start Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="startDate" name="startDate" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="endDate">End Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="endDate" name="endDate" required />
+                </div>
+                <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Search</button>
+            </form>
+        </div>
+        <!-- Add Car Form -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Add Car</h2>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="post" action="/car/add">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="model">Model</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="model" name="model" placeholder="Toyota Camry" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="year">Year</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="number" id="year" name="year" placeholder="2020" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="plateID">Plate ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="plateID" name="plateID" placeholder="ABC123" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="status">Status</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" id="status" name="status" required>
+                        <option value="Active">Active</option>
+                        <option value="Out of Service">Out of Service</option>
+                        <option value="Rented">Rented</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="officeID">Office ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="officeID" name="officeID" placeholder="1" required />
+                </div>
+                <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Add Car</button>
+            </form>
+        </div>
+
+        <!-- Update Car Form -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Update Car</h2>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="post" action="/car/update">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="carID">Car ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="carID" name="carID" placeholder="1" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="model">Model</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="model" name="model" placeholder="Toyota Camry" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="year">Year</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="number" id="year" name="year" placeholder="2020" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="plateID">Plate ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="plateID" name="plateID" placeholder="ABC123" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="status">Status</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" id="status" name="status" required>
+                        <option value="Active">Active</option>
+                        <option value="Out of Service">Out of Service</option>
+                        <option value="Rented">Rented</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="officeID">Office ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="officeID" name="officeID" placeholder="1" required />
+                </div>
+                <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Update Car</button>
+            </form>
+        </div>
+
+        <!-- Update Car Status Form -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Update Car Status</h2>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="post" action="/car/updateStatus">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="carID">Car ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="carID" name="carID" placeholder="1" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="status">Status</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" id="status" name="status" required>
+                        <option value="Active">Active</option>
+                        <option value="Out of Service">Out of Service</option>
+                        <option value="Rented">Rented</option>
+                    </select>
+                </div>
+                <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Update Status</button>
+            </form>
+        </div>
+
+        <!-- Delete Car Form -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Delete Car</h2>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="post" action="/car/delete">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="carID">Car ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="carID" name="carID" placeholder="1" required />
+                </div>
+                <button class="w-full bg-red-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-red-600 transition duration-300" type="submit">Delete Car</button>
+            </form>
+        </div>
+
+        <!-- Add Reservation Form -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Add Reservation</h2>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="post" action="/res/add">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="carID">Car ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="carID" name="carID" placeholder="1" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="customerID">Customer ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="customerID" name="customerID" placeholder="1" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="reservationDate">Reservation Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="reservationDate" name="reservationDate" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="pickupDate">Pickup Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="pickupDate" name="pickupDate" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="returnDate">Return Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="returnDate" name="returnDate" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="totalPayment">Total Payment</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="number" id="totalPayment" name="totalPayment" placeholder="100" required />
+                </div>
+                <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Add Reservation</button>
+            </form>
+        </div>
+
+        <!-- Update Reservation Form -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Update Reservation</h2>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="post" action="/res/update">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="reservationID">Reservation ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="reservationID" name="reservationID" placeholder="1" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="carID">Car ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="carID" name="carID" placeholder="1" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="customerID">Customer ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="customerID" name="customerID" placeholder="1" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="reservationDate">Reservation Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="reservationDate" name="reservationDate" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="pickupDate">Pickup Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="pickupDate" name="pickupDate" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="returnDate">Return Date</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="date" id="returnDate" name="returnDate" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="totalPayment">Total Payment</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="number" id="totalPayment" name="totalPayment" placeholder="100" required />
+                </div>
+                <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Update Reservation</button>
+            </form>
+        </div>
+
+        <!-- Delete Reservation Form -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Delete Reservation</h2>
+            <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="post" action="/res/delete">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="reservationID">Reservation ID</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="reservationID" name="reservationID" placeholder="1" required />
+                </div>
+                <button class="w-full bg-red-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-red-600 transition duration-300" type="submit">Delete Reservation</button>
+            </form>
+        </div>
+    </div>
+    <!-- Get Car by ID Form -->
+    <div class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Get Car by ID</h2>
+        <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="get" action="/car">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="carID">Car ID</label>
+                <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="carID" name="carID" placeholder="1" required />
+            </div>
+            <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Get Car</button>
+        </form>
+    </div>
+
+    <!-- Get Reservation by ID Form -->
+    <div class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Get Reservation by ID</h2>
+        <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="get" action="/res">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="reservationID">Reservation ID</label>
+                <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="reservationID" name="reservationID" placeholder="1" required />
+            </div>
+            <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Get Reservation</button>
+        </form>
+    </div>
+
+    <!-- Get Payment by ID Form -->
+    <div class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Get Payment by ID</h2>
+        <form class="w-full max-w-sm bg-white p-8 rounded-md shadow-md" method="get" action="/payment/:id">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="paymentID">Payment ID</label>
+                <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" type="text" id="paymentID" name="paymentID" placeholder="1" required />
+            </div>
+            <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300" type="submit">Get Payment</button>
+        </form>
+    </div>
+<% } %>
+
+
 </body>
 
 </html>

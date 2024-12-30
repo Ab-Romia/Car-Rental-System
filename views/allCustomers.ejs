@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All customers</title>
+</head>
+<body>
+<div class="container mt-8 p-8">
+    <h1 class="text-2xl font-bold mb-6">All customers</h1>
+    <table class="min-w-full bg-white">
+        <thead>
+        <tr>
+            <th class="py-2">id</th>
+            <th class="py-2">fname</th>
+            <th class="py-2">lname</th>
+            <th class="py-2">email</th>
+            <th class="py-2">phone</th>
+            <th class="py-2">address</th>
+            <th class="py-2">account create date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% customers.forEach(cus => { %>
+            <tr>
+                <td class="border px-4 py-2"><%= cus.CustomerID %></td>
+                <td class="border px-4 py-2"><%= cus.FirstName %></td>
+                <td class="border px-4 py-2"><%= cus.LastName %></td>
+                <td class="border px-4 py-2"><%= cus.Email %></td>
+                <td class="border px-4 py-2"><%= cus.Phone %></td>
+                <td class="border px-4 py-2"><%= cus.Address %></td>
+                <td class="border px-4 py-2"><%= cus.AccountCreatedDate %></td>
+            </tr>
+        <% }) %>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

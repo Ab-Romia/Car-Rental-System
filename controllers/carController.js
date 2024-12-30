@@ -5,14 +5,14 @@ async function addCar(req, res) {
     const { model, year, plateID, status, officeID } = req.body;
 
     if (!model || !year || !plateID || !status || !officeID) {
-        return res.status(400).json({ error: "All fields are required." });
+        return { statusCode: 400, body: { error: "All fields are required." } };
     }
 
     try {
-        const newCarId = await Car.create(model, year, plateID, status, officeID);
-        return res.status(201).json({ message: "Car added successfully.", carId: newCarId });
+        const newCarId = await Car.create(model, year, plateID, status, parseInt(officeID, 10));
+        return { statusCode: 201, body: { message: "Car added successfully.", carId: newCarId } };
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return { statusCode: 500, body: { error: err.message } };
     }
 }
 
@@ -20,7 +20,7 @@ async function addCar(req, res) {
 async function getAllCars(req, res) {
     try {
         const cars = await Car.getAll();
-        return res.status(200).json(cars);
+        res.render("allCars", { cars });
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }
@@ -31,12 +31,11 @@ async function getCarById(req, res) {
     const { id } = req.params;
 
     try {
-        const car = await Car.getById(id);
-        if (car) {
-            return res.status(200).json(car);
-        } else {
-            return res.status(404).json({ error: "Car not found." });
+        const cars = await Car.getById(id);
+        if (!cars) {
+            return res.status(404).json({ error: "car not found" });
         }
+        res.render("allCars", { cars });
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }
@@ -52,14 +51,14 @@ async function updateCar(req, res) {
     }
 
     try {
-        const updatedCar = await Car.update(id, model, year, plateID, status, officeID);
-        if (updatedCar) {
-            return res.status(200).json({ message: "Car updated successfully.", car: updatedCar });
+        const result = await Car.update(id, model, year, plateID, status, officeID);
+        if (result) {
+            return { statusCode: 200, body: { message: "Car updated successfully." } };
         } else {
-            return res.status(404).json({ error: "Car not found or update failed." });
+            return { statusCode: 404, body: { error: "Car not found." } };
         }
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return { statusCode: 500, body: { error: err.message } };
     }
 }
 
@@ -75,12 +74,12 @@ async function updateCarStatus(req, res) {
     try {
         const updatedCar = await Car.updateStatus(id, status);
         if (updatedCar) {
-            return res.status(200).json({ message: "Car status updated successfully.", car: updatedCar });
+            return { statusCode: 200, body: { message: "Car status updated successfully." } };
         } else {
-            return res.status(404).json({ error: "Car not found or update failed." });
+            return { statusCode: 404, body: { message: "Car not found" } };
         }
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return { statusCode: 500, body: { error: err.message } };
     }
 }
 
@@ -91,12 +90,12 @@ async function deleteCar(req, res) {
     try {
         const result = await Car.delete(id);
         if (result) {
-            return res.status(200).json({ message: "Car deleted successfully." });
+            return { statusCode: 200, body: { message: "Car deleted successfully." } };
         } else {
-            return res.status(404).json({ error: "Car not found." });
+            return { statusCode: 404, body: { error: "Car not found." } };
         }
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return { statusCode: 500, body: { error: err.message } };
     }
 }
 

@@ -2,9 +2,9 @@ const mysql = require('mysql2/promise');
 const pool = require('../config/pool');
 
 const Car = {
-    create: async (model, year, plateID, officeID) => {
-        const query = "INSERT INTO Car (Model, Year, PlateID, OfficeID) VALUES (?, ?, ?, ?)";
-        const [result] = await pool.execute(query, [model, year, plateID, officeID]);
+    create: async (model, year, plateID, status, officeID) => {
+        const query = "INSERT INTO Car (Model, Year, PlateID, Status, OfficeID) VALUES (?, ?, ?, ?, ?)";
+        const [result] = await pool.execute(query, [model, year, plateID, status, officeID]);
         return result.insertId;
     },
 
@@ -20,9 +20,9 @@ const Car = {
         return rows[0];
     },
 
-    update: async (id, model, year, plateID, officeID) => {
-        const query = "UPDATE Car SET Model = ?, Year = ?, PlateID = ?, OfficeID = ? WHERE CarID = ?";
-        const [result] = await pool.execute(query, [model, year, plateID, officeID, id]);
+    update: async (id, model, year, plateID,status, officeID) => {
+        const query = "UPDATE Car SET Model = ?, Year = ?, PlateID = ?,Status= ?, OfficeID = ? WHERE CarID = ?";
+        const [result] = await pool.execute(query, [model, year, plateID, status,officeID, id]);
         return result.affectedRows > 0 ? { id, model, year, plateID, officeID } : null;
     },
 

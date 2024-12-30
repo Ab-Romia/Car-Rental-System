@@ -5,43 +5,47 @@ const reportController = {
         const { startDate, endDate } = req.query;
 
         try {
-            const report = await Report.getReservationsWithinPeriod(startDate, endDate);
-            res.status(200).json(report);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
+            const reservations = await Report.getReservationsWithinPeriod(startDate, endDate);
+            res.render("allRes", { reservations });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
         }
     },
 
     getReservationsByCar: async (req, res) => {
-        const { carId, startDate, endDate } = req.query;
+        const { carID, startDate, endDate } = req.query;
 
         try {
-            const report = await Report.getReservationsByCar(carId, startDate, endDate);
-            res.status(200).json(report);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
+            const reservations = await Report.getReservationsByCar(carID, startDate, endDate);
+            res.render("allRes", { reservations });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
         }
     },
 
     getCarStatusOnSpecificDay: async (req, res) => {
-        const { specificDate } = req.query;
+        const { date } = req.query;
+
+        if (!date) {
+            return res.status(400).json({ error: "Date is required" });
+        }
 
         try {
-            const report = await Report.getCarStatusOnSpecificDay(specificDate);
-            res.status(200).json(report);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
+            const cars = await Report.getCarStatusOnSpecificDay(date);
+            res.render("report1", { cars });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
         }
     },
 
     getCustomerReservations: async (req, res) => {
-        const { customerId } = req.query;
+        const { customerID } = req.query;
 
         try {
-            const report = await Report.getCustomerReservations(customerId);
-            res.status(200).json(report);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
+            const reservations = await Report.getCustomerReservations(customerID);
+            res.render("allRes", { reservations });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
         }
     },
 
@@ -50,9 +54,9 @@ const reportController = {
 
         try {
             const payments = await Report.getDailyPayments(startDate, endDate);
-            res.status(200).json(payments);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.render("report3", { payments });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
         }
     },
 };

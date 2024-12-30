@@ -63,6 +63,8 @@ function logout(req, res, next) {
     });
 }
 
+
+
 module.exports = {
     register,
     login,

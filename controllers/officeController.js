@@ -1,29 +1,33 @@
+// controllers/officeController.js
 const Office = require("../models/office");
 
-const officeController = {
-    createOffice: async (req, res) => {
-        const { officeName, location } = req.body;
+// Create a new office
+async function createOffice(req) {
+    const { officeName, location } = req.body;
 
-        if (!officeName || !location) {
-            return res.status(400).json({ error: "All fields are required" });
-        }
+    if (!officeName || !location) {
+        return { statusCode: 400, body: { error: "All fields are required" } };
+    }
 
-        try {
-            const officeId = await Office.create(officeName, location);
-            res.status(201).json({ message: "Office created successfully", officeId });
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    },
+    try {
+        const officeId = await Office.create(officeName, location);
+        return { statusCode: 201, body: { message: "Office created successfully", officeId } };
+    } catch (error) {
+        return { statusCode: 500, body: { message: error.message } };
+    }
+}
 
-    getAllOffices: async (req, res) => {
-        try {
-            const offices = await Office.getAll();
-            res.status(200).json(offices);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    },
+// Get all offices
+async function getAllOffices() {
+    try {
+        const offices = await Office.getAll();
+        return { statusCode: 200, body: { offices } };
+    } catch (error) {
+        return { statusCode: 500, body: { message: error.message } };
+    }
+}
+
+module.exports = {
+    createOffice,
+    getAllOffices,
 };
-
-module.exports = officeController;

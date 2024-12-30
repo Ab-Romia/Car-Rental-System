@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All payments</title>
+</head>
+<body>
+<div class="container mt-8 p-8">
+    <h1 class="text-2xl font-bold mb-6">All payments</h1>
+    <table class="min-w-full bg-white">
+        <thead>
+        <tr>
+            <th class="py-2">payment id</th>
+            <th class="py-2">reservation id</th>
+            <th class="py-2">payment date</th>
+            <th class="py-2">amount</th>
+            <th class="py-2">method</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% payments.forEach(payment => { %>
+            <tr>
+                <td class="border px-4 py-2"><%= payment.PaymentID %></td>
+                <td class="border px-4 py-2"><%= payment.ReservationID %></td>
+                <td class="border px-4 py-2"><%= payment.PaymentDate %></td>
+                <td class="border px-4 py-2"><%= payment.Amount %></td>
+                <td class="border px-4 py-2"><%= payment.PaymentMethod %></td>
+
+            </tr>
+        <% }) %>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
