@@ -1,61 +1,63 @@
-<!-- login.ejs -->
-<script src="https://cdn.tailwindcss.com"></script>
-<!DOCTYPE html>
-<html lang="en">
+<%- include('partials/header', { title: 'Login - CarRental Pro', user: null }) %>
 
-<head>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Authentication</title>
-</head>
-
-<body>
-<div class="overflow-hidden h-screen p-8 bg-slate-200">
-    <div class="overflow-hidden h-screen">
-        <header class="absolute inset-x-0 top-0 z-50">
-            <nav class="flex items-center p-6 lg:px-8" aria-label="Global">
-                <div class="flex lg:flex-1 text-blue-800 text-xl ml-2">
-                    <a class="border-collapse text-blue-800 text-xl" href="/">
-                        Home
-                    </a>
-                </div>
-            </nav>
-        </header>
-        <div class="container py-8">
-            <h1 class="text-2xl font-bold ml-2 mb-4">Login Form</h1>
-            <form class="w-full max-w-sm bg-white p-4 rounded-md shadow-md" method="post" action="/api/login">
-                <% if(error) { %>
-                    <p class="text-red-500"><%= error %></p>
-                <% } %>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-                        Email
-                    </label>
-                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                           type="email" id="email" name="email" placeholder="john@example.com" required/>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-                        Password
-                    </label>
-                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                           type="password" id="password" name="password" placeholder="********" required/>
-                </div>
-                <button class="w-full bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300"
-                        type="submit">
-                    Login
-                </button>
-                <p class="pt-5">
-                    Don't have an account?
-                    <a class="text-cyan-600 cursor-pointer" href="/register">
-                        Register here
-                    </a>
-                </p>
-            </form>
-        </div>
+<div class="dashboard-container" style="min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center;">
+  <div class="form-container" style="max-width: 450px; width: 100%;">
+    <div style="text-align: center; margin-bottom: var(--spacing-lg);">
+      <i class="fas fa-user-circle" style="font-size: 4rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+      <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Welcome Back!</h1>
+      <p style="color: var(--text-light);">Login to access your dashboard</p>
     </div>
-</div>
-</body>
 
-</html>
+    <% if (error) { %>
+      <div class="alert alert-error">
+        <i class="fas fa-exclamation-circle"></i> <%= error %>
+      </div>
+    <% } %>
+
+    <form method="POST" action="/api/login" data-validate>
+      <div class="form-group">
+        <label class="form-label" for="email">
+          <i class="fas fa-envelope"></i> Email Address
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-input"
+          placeholder="john@example.com"
+          required
+          autofocus
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">
+          <i class="fas fa-lock"></i> Password
+        </label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-input"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: var(--spacing-md);">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: var(--spacing-lg); padding-top: var(--spacing-lg); border-top: 1px solid var(--border-color);">
+      <p style="color: var(--text-light);">
+        Don't have an account?
+        <a href="/register" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">
+          Sign up now <i class="fas fa-arrow-right"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer', { user: null }) %>

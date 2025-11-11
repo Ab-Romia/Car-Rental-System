@@ -1,0 +1,58 @@
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3><i class="fas fa-car"></i> CarRental Pro</h3>
+        <p>Your trusted partner for car rentals. Quality vehicles, competitive prices, and excellent service.</p>
+        <div style="margin-top: 1rem;">
+          <a href="#" style="margin-right: 1rem; font-size: 1.5rem;"><i class="fab fa-facebook"></i></a>
+          <a href="#" style="margin-right: 1rem; font-size: 1.5rem;"><i class="fab fa-twitter"></i></a>
+          <a href="#" style="margin-right: 1rem; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
+          <a href="#" style="font-size: 1.5rem;"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/browse">Browse Cars</a></li>
+          <li><a href="/login">Login</a></li>
+          <li><a href="/register">Sign Up</a></li>
+          <% if (user) { %>
+            <li><a href="/home">Dashboard</a></li>
+          <% } %>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h3>Services</h3>
+        <ul>
+          <li><a href="#">Car Rental</a></li>
+          <li><a href="#">Long-term Leasing</a></li>
+          <li><a href="#">Corporate Solutions</a></li>
+          <li><a href="#">Airport Transfer</a></li>
+          <li><a href="/office/all">Our Locations</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+        <ul>
+          <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+          <li><i class="fas fa-envelope"></i> info@carrentalpro.com</li>
+          <li><i class="fas fa-map-marker-alt"></i> 123 Main St, City, State 12345</li>
+          <li><i class="fas fa-clock"></i> Mon-Fri: 8AM-8PM</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; <%= new Date().getFullYear() %> CarRental Pro. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </div>
+  </footer>
+
+  <!-- Custom JavaScript -->
+  <script src="/js/main.js"></script>
+</body>
+</html>

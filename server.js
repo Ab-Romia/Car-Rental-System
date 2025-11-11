@@ -16,10 +16,15 @@ const reservationRoutes = require("./routes/reservationRoutes");
 const authController = require("./controllers/authController"); 
 const searchRoutes = require("./routes/searchRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const officeRoutes = require("./routes/officeRoutes");
 
 
 const app = express();
 connectDB();
+
+// Serve static files
+app.use(express.static('public'));
+
 app.use(
     session({
         secret: "GFGLogin346",
@@ -33,6 +38,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.set("view engine", "ejs");
+
+// Middleware to pass user session to all views
+app.use((req, res, next) => {
+    res.locals.user = req.session.name || null;
+    next();
+});
 
 passport.serializeUser((customer, done) => done(null, customer.CustomerID));
 passport.deserializeUser(async (id, done) => {
@@ -49,6 +60,7 @@ app.use("/api/", authController);
 app.use("/report/",reportRoutes);
 app.use("/res/",reservationRoutes);
 app.use("/car/",carRoutes);
+app.use("/office/",officeRoutes);
 
 app.use("/", routes);
 

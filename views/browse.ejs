@@ -1,0 +1,112 @@
+<%- include('partials/header', { title: 'Browse Available Cars - CarRental Pro', user: user }) %>
+
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1><i class="fas fa-car"></i> Browse Available Cars</h1>
+    <p style="color: var(--text-light); margin-top: 0.5rem;">Discover our premium fleet of vehicles</p>
+  </div>
+
+  <!-- Filters -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <form method="GET" action="/browse" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end;">
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select name="status" class="form-select">
+            <option value="">All Status</option>
+            <option value="Active" <%= status === 'Active' ? 'selected' : '' %>>Available</option>
+            <option value="Rented" <%= status === 'Rented' ? 'selected' : '' %>>Rented</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Year</label>
+          <select name="year" class="form-select">
+            <option value="">All Years</option>
+            <% for(let y = new Date().getFullYear(); y >= 2015; y--) { %>
+              <option value="<%= y %>" <%= year == y ? 'selected' : '' %>><%= y %></option>
+            <% } %>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Search Model</label>
+          <input type="text" name="search" class="form-input" placeholder="e.g., Toyota, Honda" value="<%= search || '' %>">
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" style="width: 100%;">
+            <i class="fas fa-filter"></i> Apply Filters
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Cars Grid -->
+  <% if (cars && cars.length > 0) { %>
+    <div class="car-grid">
+      <% cars.forEach(car => { %>
+        <div class="car-card">
+          <div class="car-image">
+            <i class="fas fa-car"></i>
+          </div>
+          <div class="car-details">
+            <h3 class="car-title"><%= car.Model %></h3>
+            <div class="car-info">
+              <div><i class="fas fa-calendar"></i> Year: <%= car.Year %></div>
+              <div><i class="fas fa-id-card"></i> Plate: <%= car.PlateID %></div>
+              <div><i class="fas fa-building"></i> Office ID: <%= car.OfficeID %></div>
+            </div>
+            <div style="margin: 1rem 0;">
+              <span class="car-status <%= car.Status.toLowerCase().replace(' ', '-') %>">
+                <% if (car.Status === 'Active') { %>
+                  <i class="fas fa-check-circle"></i> Available
+                <% } else if (car.Status === 'Rented') { %>
+                  <i class="fas fa-clock"></i> Rented
+                <% } else { %>
+                  <i class="fas fa-times-circle"></i> Out of Service
+                <% } %>
+              </span>
+            </div>
+            <div class="car-actions">
+              <% if (user) { %>
+                <a href="/car/<%= car.CarID %>" class="btn btn-primary btn-sm" style="flex: 1;">
+                  <i class="fas fa-eye"></i> View Details
+                </a>
+                <% if (car.Status === 'Active') { %>
+                  <a href="/res/add?carId=<%= car.CarID %>" class="btn btn-success btn-sm" style="flex: 1;">
+                    <i class="fas fa-calendar-plus"></i> Book Now
+                  </a>
+                <% } %>
+              <% } else { %>
+                <a href="/login" class="btn btn-primary btn-sm" style="flex: 1;">
+                  <i class="fas fa-sign-in-alt"></i> Login to Book
+                </a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <div class="card">
+      <div class="card-body text-center" style="padding: 3rem;">
+        <i class="fas fa-car" style="font-size: 4rem; color: var(--text-light); margin-bottom: 1rem;"></i>
+        <h3>No Cars Found</h3>
+        <p style="color: var(--text-light); margin-bottom: 1.5rem;">
+          <% if (status || year || search) { %>
+            No cars match your search criteria. Try adjusting your filters.
+          <% } else { %>
+            There are no cars available at the moment. Please check back later.
+          <% } %>
+        </p>
+        <a href="/browse" class="btn btn-primary">
+          <i class="fas fa-redo"></i> Clear Filters
+        </a>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer', { user: user }) %>

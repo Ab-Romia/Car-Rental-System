@@ -1,0 +1,267 @@
+<%- include('partials/header', { title: 'Dashboard - CarRental Pro', user: name }) %>
+
+<div class="dashboard-container">
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div>
+      <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+      <p style="color: var(--text-light); margin-top: 0.5rem;">Welcome back, <%= name %>! Here's what's happening today.</p>
+    </div>
+    <div style="display: flex; gap: 1rem;">
+      <a href="/car/add" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add Car
+      </a>
+      <a href="/res/add" class="btn btn-success">
+        <i class="fas fa-calendar-plus"></i> New Reservation
+      </a>
+    </div>
+  </div>
+
+  <% if (error) { %>
+    <div class="alert alert-error">
+      <i class="fas fa-exclamation-circle"></i> <%= error %>
+    </div>
+  <% } %>
+
+  <!-- Statistics Cards -->
+  <div class="dashboard-stats">
+    <div class="stat-card">
+      <div class="stat-icon blue">
+        <i class="fas fa-car"></i>
+      </div>
+      <div class="stat-info">
+        <h3><%= stats.totalCars %></h3>
+        <p>Total Cars</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon green">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="stat-info">
+        <h3><%= stats.activeCars %></h3>
+        <p>Available Cars</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon orange">
+        <i class="fas fa-calendar-check"></i>
+      </div>
+      <div class="stat-info">
+        <h3><%= stats.rentedCars %></h3>
+        <p>Rented Cars</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon red">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="stat-info">
+        <h3><%= stats.totalCustomers %></h3>
+        <p>Total Customers</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Stats -->
+  <div class="dashboard-stats">
+    <div class="stat-card">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+        <i class="fas fa-clipboard-list"></i>
+      </div>
+      <div class="stat-info">
+        <h3><%= stats.totalReservations %></h3>
+        <p>Total Reservations</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+        <i class="fas fa-dollar-sign"></i>
+      </div>
+      <div class="stat-info">
+        <h3>$<%= stats.totalRevenue.toFixed(2) %></h3>
+        <p>Total Revenue</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+        <i class="fas fa-tools"></i>
+      </div>
+      <div class="stat-info">
+        <h3><%= stats.outOfServiceCars %></h3>
+        <p>Out of Service</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+        <i class="fas fa-percentage"></i>
+      </div>
+      <div class="stat-info">
+        <h3><%= stats.totalCars > 0 ? ((stats.rentedCars / stats.totalCars) * 100).toFixed(1) : 0 %>%</h3>
+        <p>Utilization Rate</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg); margin-top: var(--spacing-lg);">
+    <!-- Recent Reservations -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-calendar-check"></i> Recent Reservations
+      </div>
+      <div class="card-body">
+        <% if (recentReservations && recentReservations.length > 0) { %>
+          <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+            <% recentReservations.forEach(reservation => { %>
+              <div style="padding: var(--spacing-sm); border-left: 3px solid var(--primary-color); background: var(--light-bg); border-radius: var(--radius-sm);">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                  <div>
+                    <strong>Reservation #<%= reservation.ReservationID %></strong>
+                    <p style="color: var(--text-light); font-size: 0.875rem; margin-top: 0.25rem;">
+                      <i class="fas fa-car"></i> Car ID: <%= reservation.CarID %> |
+                      <i class="fas fa-user"></i> Customer ID: <%= reservation.CustomerID %>
+                    </p>
+                    <p style="color: var(--text-light); font-size: 0.875rem;">
+                      <i class="fas fa-calendar"></i> <%= new Date(reservation.PickupDate).toLocaleDateString() %> - <%= new Date(reservation.ReturnDate).toLocaleDateString() %>
+                    </p>
+                  </div>
+                  <span style="color: var(--secondary-color); font-weight: 600;">
+                    $<%= reservation.TotalPayment %>
+                  </span>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <p style="text-align: center; color: var(--text-light); padding: 2rem;">No reservations yet</p>
+        <% } %>
+      </div>
+      <div class="card-footer">
+        <a href="/res/all" class="btn btn-outline btn-sm" style="width: 100%;">
+          View All Reservations <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Recent Payments -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-dollar-sign"></i> Recent Payments
+      </div>
+      <div class="card-body">
+        <% if (recentPayments && recentPayments.length > 0) { %>
+          <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+            <% recentPayments.forEach(payment => { %>
+              <div style="padding: var(--spacing-sm); border-left: 3px solid var(--secondary-color); background: var(--light-bg); border-radius: var(--radius-sm);">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                  <div>
+                    <strong>Payment #<%= payment.PaymentID %></strong>
+                    <p style="color: var(--text-light); font-size: 0.875rem; margin-top: 0.25rem;">
+                      <i class="fas fa-calendar"></i> <%= new Date(payment.PaymentDate).toLocaleDateString() %>
+                    </p>
+                    <p style="color: var(--text-light); font-size: 0.875rem;">
+                      <i class="fas fa-credit-card"></i> <%= payment.PaymentMethod %>
+                    </p>
+                  </div>
+                  <span style="color: var(--secondary-color); font-weight: 600; font-size: 1.125rem;">
+                    $<%= payment.Amount %>
+                  </span>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <p style="text-align: center; color: var(--text-light); padding: 2rem;">No payments yet</p>
+        <% } %>
+      </div>
+      <div class="card-footer">
+        <a href="/payment/all" class="btn btn-outline btn-sm" style="width: 100%;">
+          View All Payments <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Available Cars Section -->
+  <div class="card mt-4">
+    <div class="card-header">
+      <i class="fas fa-car"></i> Available Cars
+    </div>
+    <div class="card-body">
+      <% if (cars && cars.length > 0) { %>
+        <div class="car-grid">
+          <% cars.forEach(car => { %>
+            <div class="car-card">
+              <div class="car-image">
+                <i class="fas fa-car"></i>
+              </div>
+              <div class="car-details">
+                <h3 class="car-title"><%= car.Model %></h3>
+                <div class="car-info">
+                  <div><i class="fas fa-calendar"></i> <%= car.Year %></div>
+                  <div><i class="fas fa-id-card"></i> <%= car.PlateID %></div>
+                </div>
+                <div style="margin: 1rem 0;">
+                  <span class="car-status <%= car.Status.toLowerCase().replace(' ', '-') %>">
+                    <%= car.Status %>
+                  </span>
+                </div>
+                <div class="car-actions">
+                  <a href="/car/<%= car.CarID %>" class="btn btn-primary btn-sm" style="flex: 1;">
+                    <i class="fas fa-eye"></i> View
+                  </a>
+                  <a href="/car/update?id=<%= car.CarID %>" class="btn btn-outline btn-sm" style="flex: 1;">
+                    <i class="fas fa-edit"></i> Edit
+                  </a>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p style="text-align: center; color: var(--text-light); padding: 2rem;">No cars available</p>
+      <% } %>
+    </div>
+    <div class="card-footer">
+      <a href="/car/all" class="btn btn-primary" style="width: 100%;">
+        View All Cars <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="card mt-4">
+    <div class="card-header">
+      <i class="fas fa-bolt"></i> Quick Actions
+    </div>
+    <div class="card-body">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md);">
+        <a href="/car/add" class="card" style="text-decoration: none; text-align: center; padding: var(--spacing-lg);">
+          <i class="fas fa-plus-circle" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+          <h4 style="margin: 0;">Add New Car</h4>
+        </a>
+        <a href="/res/add" class="card" style="text-decoration: none; text-align: center; padding: var(--spacing-lg);">
+          <i class="fas fa-calendar-plus" style="font-size: 2rem; color: var(--secondary-color); margin-bottom: 0.5rem;"></i>
+          <h4 style="margin: 0;">New Reservation</h4>
+        </a>
+        <a href="/search/adv" class="card" style="text-decoration: none; text-align: center; padding: var(--spacing-lg);">
+          <i class="fas fa-search" style="font-size: 2rem; color: var(--accent-color); margin-bottom: 0.5rem;"></i>
+          <h4 style="margin: 0;">Advanced Search</h4>
+        </a>
+        <a href="/report/res" class="card" style="text-decoration: none; text-align: center; padding: var(--spacing-lg);">
+          <i class="fas fa-chart-bar" style="font-size: 2rem; color: var(--danger-color); margin-bottom: 0.5rem;"></i>
+          <h4 style="margin: 0;">View Reports</h4>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer', { user: name }) %>

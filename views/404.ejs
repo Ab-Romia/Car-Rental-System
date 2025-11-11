@@ -1,0 +1,22 @@
+<%- include('partials/header', { title: '404 - Page Not Found', user: user }) %>
+
+<div class="dashboard-container" style="min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; text-align: center;">
+  <div>
+    <i class="fas fa-car-crash" style="font-size: 6rem; color: var(--text-light); margin-bottom: 2rem;"></i>
+    <h1 style="font-size: 4rem; font-weight: 800; color: var(--text-dark); margin-bottom: 1rem;">404</h1>
+    <h2 style="font-size: 2rem; margin-bottom: 1rem;">Page Not Found</h2>
+    <p style="color: var(--text-light); font-size: 1.125rem; margin-bottom: 2rem; max-width: 500px;">
+      Oops! The page you're looking for seems to have taken a detour. Let's get you back on track.
+    </p>
+    <div style="display: flex; gap: 1rem; justify-content: center;">
+      <a href="/" class="btn btn-primary btn-lg">
+        <i class="fas fa-home"></i> Go Home
+      </a>
+      <a href="/browse" class="btn btn-outline btn-lg">
+        <i class="fas fa-car"></i> Browse Cars
+      </a>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer', { user: user }) %>
