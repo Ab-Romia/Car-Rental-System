@@ -1,5 +1,33 @@
 const pool = require("../config/pool");
 const Search = {
+    searchAvailableCars: async (model, year, plateID, officeID) => {
+        let query = `
+            SELECT ca.CarID, ca.Model, ca.Year, ca.PlateID, ca.Status, ca.OfficeID
+            FROM Car ca
+            WHERE ca.Status = 'Available'
+        `;
+        const params = [];
+
+        if (model) {
+            query += " AND ca.Model LIKE ?";
+            params.push(`%${model}%`);
+        }
+        if (year) {
+            query += " AND ca.Year = ?";
+            params.push(year);
+        }
+        if (plateID) {
+            query += " AND ca.PlateID LIKE ?";
+            params.push(`%${plateID}%`);
+        }
+        if (officeID) {
+            query += " AND ca.OfficeID = ?";
+            params.push(officeID);
+        }
+
+        const [rows] = await pool.execute(query, params);
+        return rows;
+    },
     advancedSearch: async (carInfo, customerInfo, reservationDate) => {
         let query = `
             SELECT

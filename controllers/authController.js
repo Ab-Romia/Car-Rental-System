@@ -21,7 +21,7 @@ router.post("/register", async (req, res) => {
             return res.status(409).render("register", { error: "Email already exists" });
         }
 
-        const salt = await bcrypt.genSalt(15);
+        const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const accountCreatedDate = new Date().toISOString().split('T')[0];
@@ -51,7 +51,7 @@ router.post("/login", (req, res, next) => {
         });
     })(req, res, next);
 });
-router.get("/logout", (req, res) => {
+router.get("/logout", (req, res, next) => {
     req.logout((err) => {
         if (err) {
             return next(err);

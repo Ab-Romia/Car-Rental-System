@@ -1,15 +1,17 @@
 // config/dbConfig.js
+require('dotenv').config();
 const mysql = require('mysql2/promise');
 
 // Creating a pool with the necessary configuration
 const pool = mysql.createPool({
-  host: 'localhost',           // The host where your MySQL server is running
-  user: 'root',                // MySQL username
-  password: '8368',            // MySQL password
-  database: 'car_rental_system', // The database you're working with
-  waitForConnections: true,    // Ensure it waits for connections
-  connectionLimit: 10,         // Limit the number of concurrent connections
-  queueLimit: 0                // No queue limit, adjust as needed
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME || 'car_rental_system',
+  port: process.env.DB_PORT || 3306,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 function connectDB() {

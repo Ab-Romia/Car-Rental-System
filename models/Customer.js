@@ -16,6 +16,11 @@ const Customer = {
         const query = 'SELECT * FROM Customer WHERE CustomerID = ?';
         const [rows] = await pool.execute(query, [id]);
         return rows[0];
+    },
+    getAll: async () => {
+        const query = 'SELECT * FROM Customer';
+        const [rows] = await pool.execute(query);
+        return rows;
     }
 };
 
