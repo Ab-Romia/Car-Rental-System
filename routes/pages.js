@@ -3,18 +3,19 @@ const express = require("express");
 const router = express.Router();
 const Car = require("../models/Car");
 const dashboardController = require("../controllers/dashboardController");
+const { isAuthenticated, isNotAuthenticated } = require("../middleware/auth");
 
 router.get("/", (req, res) => {
-    if (req.session.name) {
+    if (req.isAuthenticated()) {
         res.redirect("/home");
     } else {
         res.render("landing");
     }
 });
 
-router.get("/home", dashboardController.getDashboardStats);
+router.get("/home", isAuthenticated, dashboardController.getDashboardStats);
 
-router.get("/browse", async (req, res) => {
+router.get("/browse", isAuthenticated, async (req, res) => {
     try {
         const { status, year, search } = req.query;
         let cars = await Car.getAll();
@@ -50,20 +51,12 @@ router.get("/browse", async (req, res) => {
     }
 });
 
-router.get("/login", (req, res) => {
-    if (req.session.name) {
-        res.redirect("/home");
-    } else {
-        res.render("login", { error: null });
-    }
+router.get("/login", isNotAuthenticated, (req, res) => {
+    res.render("login", { error: null });
 });
 
-router.get("/register", (req, res) => {
-    if (req.session.name) {
-        res.redirect("/home");
-    } else {
-        res.render("register", { error: null });
-    }
+router.get("/register", isNotAuthenticated, (req, res) => {
+    res.render("register", { error: null });
 });
 
 module.exports = router;

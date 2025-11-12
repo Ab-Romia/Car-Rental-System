@@ -10,7 +10,7 @@ async function createReservation(req, res) {
 
     try {
         const reservationId = await Reservation.create(carID, customerID, reservationDate, pickupDate, returnDate, totalPayment);
-        return { statusCode: 201, body: { message: "res added successfully.", carId: reservationId } };
+        return { statusCode: 201, body: { message: "Reservation added successfully.", carId: reservationId } };
     } catch (err) {
         return { statusCode: 500, body: { error: err.message } };
     }
@@ -30,11 +30,11 @@ async function getAllReservations(req, res) {
 async function getReservationById(req, res) {
     const { id } = req.params;
     try {
-        const reservations = await Reservation.getById(id);
+        const reservation = await Reservation.getById(id);
         if (!reservation) {
             return res.status(404).json({ error: "Reservation not found" });
         }
-        res.render("allRes", { reservations });
+        res.render("allRes", { reservations: [reservation] });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -63,9 +63,9 @@ async function deleteReservation(req, res) {
     try {
         const isDeleted = await Reservation.delete(id);
         if (isDeleted) {
-            return { statusCode: 200, body: { message: "resr deleted successfully." } };
+            return { statusCode: 200, body: { message: "Reservation deleted successfully." } };
         } else {
-            return { statusCode: 404, body: { error: "resr not found." } };
+            return { statusCode: 404, body: { error: "Reservation not found." } };
         }
     } catch (err) {
         return { statusCode: 500, body: { error: err.message } };
