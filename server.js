@@ -18,10 +18,17 @@ const authController = require("./controllers/authController");
 const searchRoutes = require("./routes/searchRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const officeRoutes = require("./routes/officeRoutes");
+const chatRoutes = require("./routes/chatRoutes");
+const ragService = require("./services/ragService");
 
 
 const app = express();
 connectDB();
+
+// Initialize RAG service
+ragService.initialize().catch(err => {
+    console.error('Failed to initialize chat service:', err.message);
+});
 
 // Serve static files
 app.use(express.static('public'));
@@ -62,6 +69,7 @@ app.use("/report/",reportRoutes);
 app.use("/res/",reservationRoutes);
 app.use("/car/",carRoutes);
 app.use("/office/",officeRoutes);
+app.use("/chat/", chatRoutes);
 
 app.use("/", routes);
 
