@@ -16,7 +16,7 @@ async function register(req, res) {
     }
 
     try {
-        const existingCustomer = await Customer.findCustomerByEmail(email);
+        const existingCustomer = await Customer.getByEmail(email);
         if (existingCustomer) {
             return res.status(409).render("register", { error: "Email already exists" });
         }
@@ -25,7 +25,7 @@ async function register(req, res) {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const accountCreatedDate = new Date().toISOString().split('T')[0];
-        await Customer.createCustomer(firstName, lastName, email, phone, address, accountCreatedDate, hashedPassword);
+        await Customer.create(firstName, lastName, email, phone, address, accountCreatedDate, hashedPassword);
 
         return res.redirect("/login");
     } catch (err) {

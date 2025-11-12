@@ -1,9 +1,33 @@
 // Professional Car Rental System - Main JavaScript
 
+// Dark Mode Toggle
+(function() {
+  // Initialize theme from localStorage or default to light
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+})();
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+
+  // Add smooth transition
+  document.body.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+}
+
 // Mobile Menu Toggle
 document.addEventListener('DOMContentLoaded', function() {
   const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
   const navbarMenu = document.querySelector('.navbar-menu');
+
+  // Initialize theme toggle button
+  const themeToggle = document.querySelector('.theme-toggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', toggleTheme);
+  }
 
   if (mobileMenuToggle && navbarMenu) {
     mobileMenuToggle.addEventListener('click', function() {
@@ -110,7 +134,7 @@ function validateForm(form) {
     } else if (input.name === 'password' && input.value.length < 6) {
       showError(input, 'Password must be at least 6 characters');
       isValid = false;
-    } else if (input.name === 'confirmPassword') {
+    } else if (input.name === 'confirmPassword' || input.name === 'confirmpassword') {
       const password = form.querySelector('input[name="password"]');
       if (password && input.value !== password.value) {
         showError(input, 'Passwords do not match');
