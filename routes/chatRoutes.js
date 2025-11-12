@@ -5,10 +5,13 @@ const ragService = require('../services/ragService');
 // Store conversation history in memory (session-based)
 const conversationStore = new Map();
 
-// Get or create conversation history for a session
-function getConversationHistory(sessionId) {
+// Get or create conversation data for a session
+function getConversationData(sessionId) {
     if (!conversationStore.has(sessionId)) {
-        conversationStore.set(sessionId, []);
+        conversationStore.set(sessionId, {
+            history: [],
+            timestamp: Date.now()
+        });
     }
     return conversationStore.get(sessionId);
 }
@@ -16,8 +19,8 @@ function getConversationHistory(sessionId) {
 // Clean up old conversations (older than 1 hour)
 setInterval(() => {
     const oneHourAgo = Date.now() - 60 * 60 * 1000;
-    for (const [sessionId, history] of conversationStore.entries()) {
-        if (history.timestamp && history.timestamp < oneHourAgo) {
+    for (const [sessionId, data] of conversationStore.entries()) {
+        if (data.timestamp && data.timestamp < oneHourAgo) {
             conversationStore.delete(sessionId);
         }
     }
@@ -35,9 +38,17 @@ router.post('/message', async (req, res) => {
             });
         }
 
-        // Use session ID or create a temporary one
-        const sessionId = req.session.id || `temp-${Date.now()}`;
-        const conversationHistory = getConversationHistory(sessionId);
+        // Use session ID or create a temporary one based on IP and timestamp
+        let sessionId;
+        if (req.session && req.session.id) {
+            sessionId = req.session.id;
+        } else {
+            const ip = req.ip || req.connection.remoteAddress || 'unknown';
+            sessionId = `temp-${ip}-${Math.floor(Date.now() / 1000)}`;
+        }
+
+        const conversationData = getConversationData(sessionId);
+        const conversationHistory = conversationData.history;
 
         // Generate AI response
         const aiResponse = await ragService.generateResponse(message, conversationHistory);
@@ -53,7 +64,8 @@ router.post('/message', async (req, res) => {
             conversationHistory.splice(0, conversationHistory.length - 10);
         }
 
-        conversationHistory.timestamp = Date.now();
+        // Update timestamp
+        conversationData.timestamp = Date.now();
 
         res.json({
             success: true,
@@ -73,7 +85,14 @@ router.post('/message', async (req, res) => {
 // POST /chat/clear - Clear conversation history
 router.post('/clear', (req, res) => {
     try {
-        const sessionId = req.session.id || `temp-${Date.now()}`;
+        let sessionId;
+        if (req.session && req.session.id) {
+            sessionId = req.session.id;
+        } else {
+            const ip = req.ip || req.connection.remoteAddress || 'unknown';
+            sessionId = `temp-${ip}-${Math.floor(Date.now() / 1000)}`;
+        }
+
         conversationStore.delete(sessionId);
 
         res.json({
@@ -94,7 +113,8 @@ router.get('/health', (req, res) => {
     res.json({
         success: true,
         status: 'operational',
-        initialized: ragService.initialized
+        initialized: ragService.initialized,
+        apiKeyAvailable: ragService.apiKeyAvailable
     });
 });
 

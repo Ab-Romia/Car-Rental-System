@@ -4,23 +4,38 @@ const Office = require('../models/Office');
 
 class RAGService {
     constructor() {
-        this.openai = new OpenAI({
-            apiKey: process.env.OPENAI_API_KEY
-        });
+        this.openai = null;
         this.documents = [];
         this.embeddings = [];
         this.initialized = false;
+        this.apiKeyAvailable = false;
     }
 
     async initialize() {
         if (this.initialized) return;
 
+        // Check if API key is available
+        if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'your_openai_api_key_here') {
+            console.warn('OpenAI API key not configured. Chat assistant will run in fallback mode.');
+            this.initialized = true;
+            this.apiKeyAvailable = false;
+            await this.indexKnowledgeBase();
+            return;
+        }
+
         try {
+            this.openai = new OpenAI({
+                apiKey: process.env.OPENAI_API_KEY
+            });
+            this.apiKeyAvailable = true;
+
             await this.indexKnowledgeBase();
             this.initialized = true;
             console.log('RAG service initialized successfully');
         } catch (error) {
             console.error('Failed to initialize RAG service:', error.message);
+            this.initialized = true;
+            this.apiKeyAvailable = false;
         }
     }
 
@@ -92,11 +107,15 @@ class RAGService {
             console.error('Error indexing offices:', error.message);
         }
 
-        // Generate embeddings for all documents
-        await this.generateEmbeddings();
+        // Generate embeddings only if API key is available
+        if (this.apiKeyAvailable && this.openai) {
+            await this.generateEmbeddings();
+        }
     }
 
     async generateEmbeddings() {
+        if (!this.openai) return;
+
         this.embeddings = [];
 
         for (const doc of this.documents) {
@@ -128,6 +147,11 @@ class RAGService {
             await this.initialize();
         }
 
+        // If no embeddings, use simple keyword matching
+        if (!this.apiKeyAvailable || this.embeddings.length === 0) {
+            return this.simpleKeywordSearch(query, topK);
+        }
+
         try {
             const queryEmbedding = await this.openai.embeddings.create({
                 model: "text-embedding-3-small",
@@ -146,8 +170,32 @@ class RAGService {
             return similarities.slice(0, topK).map(item => item.document.content);
         } catch (error) {
             console.error('Error retrieving context:', error.message);
-            return [];
+            return this.simpleKeywordSearch(query, topK);
         }
+    }
+
+    simpleKeywordSearch(query, topK = 3) {
+        const queryLower = query.toLowerCase();
+        const keywords = queryLower.split(' ').filter(word => word.length > 3);
+
+        const scored = this.documents.map(doc => {
+            const contentLower = doc.content.toLowerCase();
+            let score = 0;
+
+            keywords.forEach(keyword => {
+                if (contentLower.includes(keyword)) {
+                    score += 1;
+                }
+            });
+
+            return { score, content: doc.content };
+        });
+
+        scored.sort((a, b) => b.score - a.score);
+
+        return scored.slice(0, topK)
+            .filter(item => item.score > 0)
+            .map(item => item.content);
     }
 
     async generateResponse(userMessage, conversationHistory = []) {
@@ -158,10 +206,18 @@ class RAGService {
         try {
             const context = await this.retrieveRelevantContext(userMessage);
 
+            // If no API key, provide simple response
+            if (!this.apiKeyAvailable || !this.openai) {
+                if (context.length > 0) {
+                    return `Based on your question, here's what I found:\n\n${context[0]}\n\nFor more detailed assistance, please contact our support team or explore our website.`;
+                }
+                return "I'd be happy to help! For detailed information about our car rental services, please browse our website or contact our support team.";
+            }
+
             const systemMessage = `You are a helpful car rental assistant for CarRental Pro. Use the following context to answer questions accurately and helpfully:
 
 Context:
-${context.join('\n\n')}
+${context.length > 0 ? context.join('\n\n') : 'General car rental information available on our website.'}
 
 Guidelines:
 - Be friendly and professional
@@ -189,6 +245,10 @@ Guidelines:
 
             if (error.code === 'insufficient_quota') {
                 return "I'm currently unavailable due to API limits. Please contact our support team for assistance.";
+            }
+
+            if (error.status === 401) {
+                return "The chat service is not properly configured. Please contact our support team for assistance.";
             }
 
             return "I apologize, but I'm having trouble processing your request right now. Please try again or contact our support team.";
